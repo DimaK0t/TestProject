@@ -43,7 +43,7 @@
             this.runButton.TabIndex = 0;
             this.runButton.Text = "Run";
             this.runButton.UseVisualStyleBackColor = true;
-            this.runButton.Click += new System.EventHandler(this.button1_Click);
+            this.runButton.Click += new System.EventHandler(this.Run_Click);
             // 
             // treeView1
             // 

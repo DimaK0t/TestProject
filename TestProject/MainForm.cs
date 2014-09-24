@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TestProject.Workers;
 
 namespace TestProject
 {
@@ -17,10 +18,11 @@ namespace TestProject
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Run_Click(object sender, EventArgs e)
         {
-           
-
+            var scaner = new ScanFileSystemWorker();
+            scaner.TraverseTree(selectedPathTextBox.Text);
+            this.runButton .BackColor = Color.Red;
         }
 
         private void SelectPath_Click(object sender, EventArgs e)
