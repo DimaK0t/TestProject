@@ -1,0 +1,2 @@
+D:\Projects\TestProject\TestProject\bin\Debug\TestProject.exe.config
+D:\VS_projects\TestProject\TestProject\bin\Debug\TestProject.exe.config
