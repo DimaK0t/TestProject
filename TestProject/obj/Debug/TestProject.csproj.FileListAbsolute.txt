@@ -1,2 +1,10 @@
 D:\Projects\TestProject\TestProject\bin\Debug\TestProject.exe.config
 D:\VS_projects\TestProject\TestProject\bin\Debug\TestProject.exe.config
+D:\VS_projects\TestProject\TestProject\bin\Debug\TestProject.exe
+D:\VS_projects\TestProject\TestProject\bin\Debug\TestProject.pdb
+D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.csprojResolveAssemblyReference.cache
+D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.MainForm.resources
+D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.Properties.Resources.resources
+D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.csproj.GenerateResource.Cache
+D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.exe
+D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.pdb
