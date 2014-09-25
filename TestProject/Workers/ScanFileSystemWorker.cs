@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestProject.Models;
 
 namespace TestProject.Workers
 {
@@ -17,26 +13,25 @@ namespace TestProject.Workers
                 // throw new ArgumentException();
                 return;
             }
-            
-            //TODO: get dir info
+            //TODO: get dir info.
 
-            var subDirs = GetSubFolders(root);
-            var files = GetFiles(root);
-
-            if (files == null)
+       
+            string[] files;
+            if (TryGetFiles(root, out files))
             {
-                return;
+                foreach (var file in files)
+                {
+                    var fileInfo = GetFileInfo(file);
+                }
             }
 
-            foreach (var file in files)
+            string[] subDirs;
+            if (TryGetSubDirectories(root, out subDirs))
             {
-                var fileInfo = GetFileInfo(file);
-            }
-
-            // Push the subdirectories onto the stack for traversal.
-            foreach (var str in subDirs)
-            {
-                TraverseTree(str);
+                foreach (var str in subDirs)
+                {
+                    TraverseTree(str);
+                }
             }
         }
 
@@ -57,15 +52,18 @@ namespace TestProject.Workers
                 //Don`t process files with too long name. But dont stop process tree.
                 Console.WriteLine(e.Message);
             }
+
             return fi;
         }
 
-        private IEnumerable<string> GetFiles(string currentDir)
+        private bool TryGetFiles(string currentDir, out string[] files)
         {
-            string[] files = null;
+            files = null;
+
             try
             {
                 files = System.IO.Directory.GetFiles(currentDir);
+                return true;
             }
 
             catch (UnauthorizedAccessException e)
@@ -77,27 +75,31 @@ namespace TestProject.Workers
             {
                 Console.WriteLine(e.Message);
             }
-            return files;
+
+            return false;
         }
 
-        private IEnumerable<string> GetSubFolders(string currentDir)
+        private bool TryGetSubDirectories(string currentDir, out string[] directories)
         {
-            string[] subDirs = null;
+            directories = null;
+
             try
             {
-                subDirs = System.IO.Directory.GetDirectories(currentDir);
+                directories = System.IO.Directory.GetDirectories(currentDir);
+                return true;
             }
 
             catch (UnauthorizedAccessException e)
             {
                 Console.WriteLine(e.Message);
             }
+
             catch (DirectoryNotFoundException e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            return subDirs;
+            return false;
         }
     }
 }
