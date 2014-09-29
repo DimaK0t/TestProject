@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TestProject.Models;
 
 namespace TestProject.Workers
 {
     public class FileSystemWorker
     {
-        public void TraverseTree(string root)
+        private Queue<NodeInfo> _queue;
+        private SyncEvents _syncEvents;
+
+        public FileSystemWorker(Queue<NodeInfo> queue, SyncEvents syncEvents)
         {
+             _queue = queue;
+            _syncEvents = syncEvents;
+        }
+
+        public void TraverseTree(object rootObject)
+        {
+            var root = (string)rootObject;
+
             if (!Directory.Exists(root))
             {
                 // throw new ArgumentException();

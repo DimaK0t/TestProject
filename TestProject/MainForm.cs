@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TestProject.Models;
 using TestProject.Workers;
 
 namespace TestProject
@@ -20,9 +22,9 @@ namespace TestProject
 
         private void Run_Click(object sender, EventArgs e)
         {
-            var scaner = new FileSystemWorker();
-            scaner.TraverseTree(selectedPathTextBox.Text);
-            this.runButton .BackColor = Color.Red;
+            var scaner = new FileSystemWorker(new Queue<NodeInfo>(), new SyncEvents() );
+            var scanerThread = new Thread(scaner.TraverseTree);
+            scanerThread.Start(selectedPathTextBox.Text);
         }
 
         private void SelectPath_Click(object sender, EventArgs e)

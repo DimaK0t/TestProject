@@ -11,3 +11,9 @@ D:\VS_projects\TestProject\TestProject\obj\Debug\TestProject.pdb
 D:\Work\TestProject\TestProject\bin\Debug\TestProject.exe.config
 D:\Work\TestProject\TestProject\obj\Debug\TestProject.exe
 D:\Work\TestProject\TestProject\obj\Debug\TestProject.pdb
+D:\Work\TestProject\TestProject\bin\Debug\TestProject.exe
+D:\Work\TestProject\TestProject\bin\Debug\TestProject.pdb
+D:\Work\TestProject\TestProject\obj\Debug\TestProject.csprojResolveAssemblyReference.cache
+D:\Work\TestProject\TestProject\obj\Debug\TestProject.MainForm.resources
+D:\Work\TestProject\TestProject\obj\Debug\TestProject.Properties.Resources.resources
+D:\Work\TestProject\TestProject\obj\Debug\TestProject.csproj.GenerateResource.Cache
