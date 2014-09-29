@@ -20,7 +20,7 @@ namespace TestProject
 
         private void Run_Click(object sender, EventArgs e)
         {
-            var scaner = new ScanFileSystemWorker();
+            var scaner = new FileSystemWorker();
             scaner.TraverseTree(selectedPathTextBox.Text);
             this.runButton .BackColor = Color.Red;
         }

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace TestProject.Workers
 {
-    public class ScanFileSystemWorker
+    public class FileSystemWorker
     {
         public void TraverseTree(string root)
         {
@@ -13,35 +13,66 @@ namespace TestProject.Workers
                 // throw new ArgumentException();
                 return;
             }
-            //TODO: get dir info.
-
+            
+            DirectoryInfo directoryInfo;
+            if (TryGetDirectoryInfo(root, out directoryInfo))
+            {
+                //todo: do anything with this info    
+            }
        
             string[] files;
             if (TryGetFiles(root, out files))
             {
                 foreach (var file in files)
                 {
-                    var fileInfo = GetFileInfo(file);
+                    FileInfo fileInfo;
+                    if (TryGetFileInfo(file, out fileInfo))
+                    {
+                        //todo: do anything with this info
+                    }
                 }
             }
 
             string[] subDirs;
-            if (TryGetSubDirectories(root, out subDirs))
+            if (!TryGetSubDirectories(root, out subDirs))
             {
-                foreach (var str in subDirs)
-                {
-                    TraverseTree(str);
-                }
+                return;
+            }
+
+            foreach (var str in subDirs)
+            {
+                TraverseTree(str);
             }
         }
 
-        private FileInfo GetFileInfo(string path)
+        private bool TryGetDirectoryInfo(string path, out DirectoryInfo directoyInfo)
         {
-            FileInfo fi = null;
+            directoyInfo = null;
             try
             {
-                // Perform whatever action is required in your scenario.
-                fi = new FileInfo(path);
+                directoyInfo = new DirectoryInfo(path);
+                return true;
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (PathTooLongException e)
+            {
+                //Don`t process directory with too long name. But dont stop process tree.
+                Console.WriteLine(e.Message);
+            }
+
+            return false;
+        }
+
+        private bool TryGetFileInfo(string path, out FileInfo fileInfo)
+        {
+            fileInfo = null;
+            try
+            {
+                fileInfo = new FileInfo(path);
+                return true;
             }
             catch (FileNotFoundException e)
             {
@@ -53,7 +84,7 @@ namespace TestProject.Workers
                 Console.WriteLine(e.Message);
             }
 
-            return fi;
+            return false;
         }
 
         private bool TryGetFiles(string currentDir, out string[] files)
