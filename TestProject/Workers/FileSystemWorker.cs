@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TestProject.Models;
@@ -18,20 +19,25 @@ namespace TestProject.Workers
 
         public void TraverseTree(object rootObject)
         {
-            var root = (string)rootObject;
+            if (_syncEvents.ExitThreadEvent.WaitOne(0, false))
+            {
+                return;
+            }
+
+            var root = (string) rootObject;
 
             if (!Directory.Exists(root))
             {
                 // throw new ArgumentException();
                 return;
             }
-            
+
             DirectoryInfo directoryInfo;
             if (TryGetDirectoryInfo(root, out directoryInfo))
             {
-                //todo: do anything with this info    
+                Enqueue(new NodeInfo(directoryInfo));
             }
-       
+
             string[] files;
             if (TryGetFiles(root, out files))
             {
@@ -40,7 +46,7 @@ namespace TestProject.Workers
                     FileInfo fileInfo;
                     if (TryGetFileInfo(file, out fileInfo))
                     {
-                        //todo: do anything with this info
+                        Enqueue(new NodeInfo(fileInfo));
                     }
                 }
             }
@@ -54,6 +60,15 @@ namespace TestProject.Workers
             foreach (var str in subDirs)
             {
                 TraverseTree(str);
+            }
+        }
+
+        private void Enqueue(NodeInfo nodeInfo)
+        {
+            lock (((ICollection)_queue).SyncRoot)
+            {
+                _queue.Enqueue(nodeInfo);
+                _syncEvents.NewItemEvent.Set();
             }
         }
 

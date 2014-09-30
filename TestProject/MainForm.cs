@@ -18,13 +18,24 @@ namespace TestProject
         public MainForm()
         {
             InitializeComponent();
+            selectedPathTextBox.Text = @"D:\OneDrive\Pictures\Camera Roll";
         }
 
         private void Run_Click(object sender, EventArgs e)
         {
-            var scaner = new FileSystemWorker(new Queue<NodeInfo>(), new SyncEvents() );
+            var nodeQueue = new Queue<NodeInfo>();
+            var syncEvents = new SyncEvents();
+
+            // start file system scaner.
+            var scaner = new FileSystemWorker(nodeQueue, syncEvents);
             var scanerThread = new Thread(scaner.TraverseTree);
             scanerThread.Start(selectedPathTextBox.Text);
+
+            // start XML writer.
+            var xmlWriter = new XmlWorker(nodeQueue, syncEvents);
+            var xmlThread = new Thread(xmlWriter.WriteXml);
+            xmlThread.Start("D:\\xml.xml");
+
         }
 
         private void SelectPath_Click(object sender, EventArgs e)

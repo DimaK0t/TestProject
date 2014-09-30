@@ -35,10 +35,5 @@ namespace TestProject
         {
             get { return _eventArray; }
         }
-
-        public void V()
-        {
-            _exitThreadEvent.WaitOne(0, false);
-        }
     }
 }

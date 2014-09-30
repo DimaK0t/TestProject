@@ -58,6 +58,7 @@
             this.selectedPathTextBox.Name = "selectedPathTextBox";
             this.selectedPathTextBox.Size = new System.Drawing.Size(157, 20);
             this.selectedPathTextBox.TabIndex = 2;
+            this.selectedPathTextBox.Text = "C:\\";
             // 
             // selectPathFolder
             // 
