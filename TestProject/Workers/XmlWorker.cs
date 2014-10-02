@@ -11,13 +11,15 @@ namespace TestProject.Workers
 {
     public class XmlWorker
     {
-        private readonly Queue<NodeInfo> _queue;
+        private readonly SafeQueue<NodeInfo> _queue;
         private readonly SyncEvents _syncEvents;
+        private readonly AutoResetEvent _doneEvent = new AutoResetEvent(false);
 
-        public XmlWorker(Queue<NodeInfo> queue, SyncEvents syncEvents)
+        public XmlWorker(SafeQueue<NodeInfo> queue, SyncEvents syncEvents)
         {
             _queue = queue;
             _syncEvents = syncEvents;
+            _syncEvents.AddDoneEvent(_doneEvent);
         }
 
         public void WriteXml(object xmlPath)
@@ -27,13 +29,10 @@ namespace TestProject.Workers
 
             while (!_syncEvents.ExitThreadEvent.WaitOne(0, false))
             {
-                if (_queue.Any())
+                if (_queue.Count != 0)
                 {
-                    lock (((ICollection) _queue).SyncRoot)
-                    {
-                        var item = _queue.Dequeue();
-                        i++;
-                    }
+                    _doneEvent.Set();
+                    var item = _queue.Dequeue();
                 }
                 
                 // seems like we have handled all items

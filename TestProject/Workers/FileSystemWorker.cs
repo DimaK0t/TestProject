@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TestProject.Models;
@@ -8,10 +7,10 @@ namespace TestProject.Workers
 {
     public class FileSystemWorker
     {
-        private Queue<NodeInfo> _queue;
+        private SafeQueue<NodeInfo> _queue;
         private SyncEvents _syncEvents;
 
-        public FileSystemWorker(Queue<NodeInfo> queue, SyncEvents syncEvents)
+        public FileSystemWorker(SafeQueue<NodeInfo> queue, SyncEvents syncEvents)
         {
              _queue = queue;
             _syncEvents = syncEvents;
@@ -35,7 +34,7 @@ namespace TestProject.Workers
             DirectoryInfo directoryInfo;
             if (TryGetDirectoryInfo(root, out directoryInfo))
             {
-                Enqueue(new NodeInfo(directoryInfo));
+                _queue.Enqueue(new NodeInfo(directoryInfo));
             }
 
             string[] files;
@@ -46,7 +45,7 @@ namespace TestProject.Workers
                     FileInfo fileInfo;
                     if (TryGetFileInfo(file, out fileInfo))
                     {
-                        Enqueue(new NodeInfo(fileInfo));
+                        _queue.Enqueue(new NodeInfo(fileInfo));
                     }
                 }
             }
@@ -60,15 +59,6 @@ namespace TestProject.Workers
             foreach (var str in subDirs)
             {
                 TraverseTree(str);
-            }
-        }
-
-        private void Enqueue(NodeInfo nodeInfo)
-        {
-            lock (((ICollection)_queue).SyncRoot)
-            {
-                _queue.Enqueue(nodeInfo);
-                _syncEvents.NewItemEvent.Set();
             }
         }
 

@@ -23,8 +23,8 @@ namespace TestProject
 
         private void Run_Click(object sender, EventArgs e)
         {
-            var nodeQueue = new Queue<NodeInfo>();
             var syncEvents = new SyncEvents();
+            var nodeQueue = new SafeQueue<NodeInfo>(syncEvents);
 
             // start file system scaner.
             var scaner = new FileSystemWorker(nodeQueue, syncEvents);
@@ -35,7 +35,6 @@ namespace TestProject
             var xmlWriter = new XmlWorker(nodeQueue, syncEvents);
             var xmlThread = new Thread(xmlWriter.WriteXml);
             xmlThread.Start("D:\\xml.xml");
-
         }
 
         private void SelectPath_Click(object sender, EventArgs e)

@@ -1,39 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace TestProject
 {
     public class SyncEvents
     {
-        private EventWaitHandle _newItemEvent;
-        private EventWaitHandle _exitThreadEvent;
-        private WaitHandle[] _eventArray;
+        private readonly EventWaitHandle _newItemEvent;
+        private readonly EventWaitHandle _exitThreadEvent;
+        private readonly List<WaitHandle> _doneEvents;
 
         public SyncEvents()
         {
-
             _newItemEvent = new AutoResetEvent(false);
             _exitThreadEvent = new ManualResetEvent(false);
-            _eventArray = new WaitHandle[2];
-            _eventArray[0] = _newItemEvent;
-            _eventArray[1] = _exitThreadEvent;
+            _doneEvents = new List<WaitHandle>();
         }
 
         public EventWaitHandle ExitThreadEvent
         {
             get { return _exitThreadEvent; }
         }
+
         public EventWaitHandle NewItemEvent
         {
             get { return _newItemEvent; }
         }
-        public WaitHandle[] EventArray
+
+        public IEnumerable<WaitHandle> DoneEvents
         {
-            get { return _eventArray; }
+             get { return _doneEvents; } 
+        }
+
+        public void AddDoneEvent(WaitHandle waitHandle)
+        {
+            _doneEvents.Add(waitHandle);
         }
     }
 }
